@@ -12,17 +12,20 @@ Este repositório é dedicado ao estudo e implementação de segurança operacio
 
 ---
 
-## 🛠️ Laboratórios e Casos de Uso
+## Laboratórios e Casos de Uso
 *(Espaço reservado para a documentação técnica dos módulos concluídos)*
 
 ---
 
-## 📜 Scripts e Automação
+## Scripts e Automação
 Repositório de ferramentas desenvolvidas para otimização de segurança e infraestrutura:
 
-* **`init_repo2.sh`**: Automação para organização do workspace de segurança.
+* [**init_repo2.sh**](./init_repo2.sh): Automação para organização do workspace de segurança.
 
 ---
 
-## 🌎 Global Outreach
-Documentação mantida de forma bilíngue (PT-BR/EN-US) visando o alinhamento com padrões de operação em empresas multinacionais.
+## 🌎 Global Outreach / Alcance Global
+
+Este repositório segue padrões de documentação de empresas multinacionais. Para garantir a fidelidade técnica, **termos de engenharia, logs de sistema e mensagens de erro** são mantidos exclusivamente em Inglês.
+
+This repository follows multinational documentation standards. To ensure technical accuracy, **engineering terms, system logs, and error messages** are maintained exclusively in English.
