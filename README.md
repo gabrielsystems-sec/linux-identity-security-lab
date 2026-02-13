@@ -37,9 +37,9 @@ Repositório de ferramentas desenvolvidas para otimização de segurança e infr
 Além dos resultados finais, este repositório documenta a metodologia aplicada para garantir padrões de nível enterprise.
 
 ### 🔍 Project Audit
-* **[Directory Hierarchy](docs/assets/projeto-estrutura-git.png)**: Visualização da organização profissional de pastas e separação de interesses.
-* **[Git Staging & Lifecycle](docs/assets/evidencia-deploy-local.png)**: Evidência do gerenciamento de versão via CLI, demonstrando controle sobre o ciclo de vida do código.
-* **[Documentation Methodology](docs/assets/documentation-workflow-vim.png)**: Registro da elaboração técnica utilizando **Vim**, focando em produtividade e operação em ambientes headless.
+* **[Directory Hierarchy](docs/assets/projeto-estrutura-git.png)**: Visualização da organização profissional de pastas.
+* **[Git Staging & Lifecycle](docs/assets/evidencia-deploy-local.png)**: Gerenciamento de versão via CLI.
+* **[Documentation Methodology](docs/assets/documentation-workflow-vim.png)**: Elaboração técnica via Vim.
 
 > **Global Mindset**: As evidências acima comprovam a capacidade de operar seguindo padrões internacionais de engenharia e documentação.
 
