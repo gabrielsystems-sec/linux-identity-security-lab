@@ -13,7 +13,15 @@ Este repositório é dedicado ao estudo e implementação de segurança operacio
 ---
 
 ## Laboratórios e Casos de Uso
-*(Espaço reservado para a documentação técnica dos módulos concluídos)*
+#### **Lab 01: User Management & Password Compliance**
+**Objective:** Provisioning users and auditing account security policies.
+* **IAM Dashboard (Cockpit):** [View Evidence](docs/assets/iam-cockpit.png)
+* **Security Audit (CLI):** [View Evidence](docs/assets/user-audit-cli.png)
+
+**Technical Summary:**
+- Hardened user access via `wheel` group.
+- Verified password aging compliance with `chage`.
+- Restricted `/home` permissions to `700`.
 
 ---
 
