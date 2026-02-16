@@ -1,55 +1,75 @@
-# Repo 2: Identity, Access & Cybersecurity
+cat << 'EOF' > README.md
+# Repo 2: Identity, Access & Cybersecurity 🛡️
 
-Este repositório foca na implementação de segurança operacional, gestão de identidades e **Hardening** de sistemas Linux, focado em infraestruturas críticas e conformidade técnica.
+Este repositório documenta minha jornada de aprendizado em **Segurança Operacional e Hardening**. Aqui, o foco deixa de ser apenas "fazer funcionar" e passa a ser "fazer de forma segura", aplicando o princípio do privilégio mínimo e a redução da superfície de ataque.
 
-> **Status:** 🚧 Em construção. Conteúdo atualizado conforme a evolução dos laboratórios.
-
----
-
-## Objetivos de Engenharia
-* **Identity Management:** Gestão de ciclo de vida de usuários e controle de acessos (IAM).
-* **Access Control:** Implementação de permissões avançadas e segurança de arquivos.
-* **System Hardening:** Aplicação de políticas para redução da superfície de ataque.
-* **Security Automation:** Desenvolvimento de ferramentas para auditoria e automação de segurança.
+> **🎯 Perfil:** Entusiasta de Linux e Cibersegurança em busca de **Estágio/Oportunidade Júnior**. Este projeto demonstra minha disciplina com documentação técnica e atenção aos detalhes de infraestrutura corporativa.
 
 ---
 
-## Laboratórios e Casos de Uso
+## 🛠️ Laboratórios de Especialização
 
-### **Lab 01: Gestão de Usuários e Password Compliance**
-**Objetivo:** Provisionamento de contas, auditoria de políticas de segurança e controle de privilégios.
+### **1. Identity & Access Management (IAM)**
+Implementação de políticas de governança de usuários e grupos para garantir conformidade e rastreabilidade. Para equilibrar a gestão, utilizo tanto o monitoramento visual quanto a auditoria bruta via terminal.
 
-![IAM Audit](docs/assets/user-audit-cli.png)
-*Legenda: Auditoria de conformidade de usuários e permissões via CLI.*
+![IAM Management](docs/assets/iam-cockpit.png)
+*Legenda: Gestão centralizada de contas e monitoramento de logs via Cockpit.*
 
-**Resumo Técnico:**
-- **Acesso Restrito:** Implementação de privilégios elevados via grupo `wheel` (Sudoers).
-- **Compliance:** Verificação de validade e complexidade de senhas com o comando `chage`.
-- **Privacy:** Ajuste de permissões em diretórios sensíveis (Restrição de `/home` para `700`).
-
-### **Lab 02: Network Security & Intelligence (Auditoria de Redes)**
-**Objetivo:** Mapeamento de superfície de ataque e análise de protocolos críticos sob a ótica de segurança.
-
-![Network & Service Audit](docs/assets/nmap-audit.png)
-*Legenda: Auditoria de serviços e protocolos (Layer 4/7) via binário customizado do Nmap.*
-
-**Resumo Técnico:**
-- **Análise de Camadas:** Monitoramento de handshakes TCP/UDP e mapeamento de portas abertas.
-- **Protocol Hardening:** Identificação e recomendação de desativação de protocolos legados (Telnet, FTP, HTTP).
-- **Ferramenta Customizada:** `Nmap v7.98` compilado manualmente em **Rocky Linux** com suporte a **OpenSSL 3.5.1** e **LibSSH2 1.11.1**.
-
-#### Protocol Analysis Focus
-- **SSH (22):** Auditoria de algoritmos de troca de chaves (KexAlgorithms).
-- **DNS (53):** Verificação de integridade de zonas e prevenção de *DNS Poisoning*.
-- **HTTP/S (80/443):** Análise de certificados SSL/TLS e headers de segurança.
+**Habilidades demonstradas:**
+* **Auditoria CLI:** Validação de permissões, integridade de arquivos sensíveis e gestão de privilégios elevados. ![User Audit](docs/assets/user-audit-cli.png)
+* **Compliance:** Configuração de políticas de senhas e expiração de contas (Password Aging).
+* **Evidência Extra:** [Ajuste de Runlevels e Targets do Sistema](docs/assets/hardening-target-configuration.png).
 
 ---
-## Scripts e Automação
-* [**init_repo2.sh**](./init_repo2.sh): Automação de workspace e padronização de logs de auditoria.
 
-## Metodologia e Evidências de Processo
-Documentação aplicada para garantir padrões de nível **Enterprise**.
+### **2. SSH Hardening & SELinux (Segurança de Infraestrutura)**
+Configuração crítica do serviço SSH para mitigar vetores de ataque comuns e gestão de políticas de segurança no nível do Kernel.
 
-* **[Estrutura de Diretórios](docs/assets/projeto-estrutura-git.png)**: Organização profissional e escalável.
-* **[Ciclo de Vida Git](docs/assets/evidencia-deploy-local.png)**: Gerenciamento de versão rigoroso via CLI.
-* **[Workflow de Documentação](docs/assets/documentation-workflow-vim.png)**: Elaboração técnica via **Vim**.
+![SSH & SELinux Hardening](docs/assets/ssh-hardening-selinux-resolution.png)
+*Legenda: Ajustando contextos do SELinux para permitir serviços customizados sem abrir mão da segurança.*
+
+> **🔐 Nota de Hardening (SELinux States):**
+> Durante este lab, apliquei a diferença entre **Enforcing** (bloqueio ativo), **Permissive** (diagnóstico) e **Disabled** (inseguro). O objetivo foi manter o sistema sempre em modo Enforcing, corrigindo as políticas conforme necessário.
+
+**Habilidades demonstradas:**
+* **Blindagem de Acesso:** [Configuração final do SSHD](docs/assets/sshd-config-hardening-final.png) (Desativação de login root, porta não-padrão e criptografia forte).
+* **Service Control:** [Uso de Masking em serviços inseguros e configuração de IPtables](docs/assets/hardening-service-masking-iptables.png).
+
+---
+
+### **3. Auditoria de Rede e Inteligência**
+Mapeamento de serviços e portas para detecção de vulnerabilidades. Este laboratório destaca minha proatividade em trabalhar com ferramentas atualizadas.
+
+![Security Audit](docs/assets/nmap-audit.png)
+*Legenda: Auditoria com Nmap v7.98 (Compilado manualmente com suporte a OpenSSL e LibSSH2).*
+
+**Diferencial Técnico:**
+- **Source Compilation:** Domínio de compilação de software para garantir suporte a protocolos modernos de segurança (SSL/TLS).
+- **Network Discovery:** Análise de superfícies de exposição em ambientes Rocky Linux.
+
+---
+
+## 🏆 Desafios Técnicos Superados
+
+Ao longo deste repositório, enfrentei e resolvi obstáculos que demonstram minha resiliência técnica:
+
+1. **Persistência do SELinux:** Ao alterar a porta do SSH, o serviço foi bloqueado pelo Kernel. Em vez de desabilitar a segurança, utilizei o `semanage` para criar uma política que permitisse a nova porta, mantendo o sistema blindado.
+2. **Automação de Serviços:** Superei erros de execução no Systemd ao configurar serviços de monitoramento, aprendendo a trabalhar com caminhos absolutos e gestão de permissões em `/var/log`.
+3. **Gestão de Dependências:** A compilação manual do Nmap exigiu a resolução de dependências críticas de desenvolvimento, garantindo uma ferramenta de auditoria superior à versão padrão dos repositórios.
+
+---
+
+## ✍️ Metodologia e Workflow
+Documentar é tão importante quanto executar. Utilizo o terminal como minha principal IDE de trabalho.
+
+* **[Vim como IDE de Documentação](docs/assets/documentation-workflow-vim.png)**: Edição ágil e direta no servidor.
+* **[Organização de Repositório](docs/assets/projeto-estrutura-git.png)**: Estrutura profissional para escalabilidade.
+* **[Ciclo de Vida Git](docs/assets/evidencia-deploy-local.png)**: Versionamento rigoroso para garantir a integridade do código.
+
+---
+
+## 🚀 Contato
+Estou pronto para aprender e contribuir em times de infraestrutura e segurança. Sinta-se à vontade para revisar meus laboratórios!
+EOF
+
+echo "✅ README.md do Repo 2 atualizado com o equilíbrio perfeito entre técnica e experiência!"
