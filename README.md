@@ -1,4 +1,4 @@
-cat << 'EOF' > README.md
+
 # Repo 2: Identity, Access & Cybersecurity 🛡️
 
 Este repositório documenta minha jornada de aprendizado em **Segurança Operacional e Hardening**. Aqui, o foco deixa de ser apenas "fazer funcionar" e passa a ser "fazer de forma segura", aplicando o princípio do privilégio mínimo e a redução da superfície de ataque.
@@ -70,6 +70,3 @@ Documentar é tão importante quanto executar. Utilizo o terminal como minha pri
 
 ## 🚀 Contato
 Estou pronto para aprender e contribuir em times de infraestrutura e segurança. Sinta-se à vontade para revisar meus laboratórios!
-EOF
-
-echo "✅ README.md do Repo 2 atualizado com sucesso!"
