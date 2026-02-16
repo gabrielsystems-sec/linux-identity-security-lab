@@ -72,4 +72,4 @@ Documentar é tão importante quanto executar. Utilizo o terminal como minha pri
 Estou pronto para aprender e contribuir em times de infraestrutura e segurança. Sinta-se à vontade para revisar meus laboratórios!
 EOF
 
-echo "✅ README.md do Repo 2 atualizado com o equilíbrio perfeito entre técnica e experiência!"
+echo "✅ README.md do Repo 2 atualizado com sucesso!"
