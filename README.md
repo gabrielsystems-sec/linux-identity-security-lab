@@ -37,6 +37,22 @@ Configuração crítica do serviço SSH para mitigar vetores de ataque comuns e 
 
 ---
 
+## 🛡️ Hardening & Compliance Frameworks
+
+As implementações deste laboratório foram norteadas por frameworks de segurança reconhecidos pelo mercado (**NIST** e **CIS Controls**), visando o alinhamento com normas de governança (**ISO 27001**).
+
+### Security Configuration (SELinux)
+Para garantir o isolamento de processos e proteção do Kernel, o sistema é operado em conformidade com as políticas de controle de acesso obrigatório:
+
+* **Enforcing:** Estado ativo. O SELinux impõe a política e bloqueia acessos com base em regras de contexto (Padrão deste laboratório).
+* **Permissive:** O sistema apenas gera alertas de violação no log, sem bloquear a ação. Essencial para troubleshooting de aplicações.
+* **Disabled:** Nenhuma política de segurança é carregada. Estado evitado para manter a integridade do ambiente.
+
+### Vulnerability Management & Blue Team
+A auditoria realizada via **Nmap** e **User Audit CLI** (documentada nas evidências) foca na Redução da Superfície de Ataque (*Attack Surface Reduction*), garantindo que apenas serviços autorizados e portas estritamente necessárias estejam acessíveis.
+
+---
+
 ### **3. Auditoria de Rede e Inteligência**
 Mapeamento de serviços e portas para detecção de vulnerabilidades. Este laboratório destaca minha proatividade em trabalhar com ferramentas atualizadas.
 
