@@ -1,57 +1,63 @@
 # Repo 2: Identity, Access & Cybersecurity 🛡️
 
-Este repositório documenta a implementação de uma **Arquitetura de Defesa em Profundidade** utilizando o Rocky Linux 9. O objetivo foi transformar um servidor padrão em uma infraestrutura blindada, auditável e resiliente, focando em segurança operacional para o mercado brasileiro.
+Este repositório documenta a blindagem de um servidor Rocky Linux 9, transformando-o em uma infraestrutura resiliente e auditável. O foco foi a implementação de camadas de defesa em profundidade para proteção de dados e controle de acesso.
 
 ---
 
-## Estrutura do Projeto
-A organização deste repositório segue padrões de documentação profissional:
-* `scripts/`: Automações de segurança e monitoramento.
-* `docs/assets/`: Evidências técnicas de auditorias e logs.
-* `config/`: Arquivos de configuração de serviços (Fail2Ban, Tripwire, etc).
+## Resumo do Hardening (Resultados Reais)
+
+Aqui estão os pilares de segurança implementados. Clique para ver os detalhes técnicos de cada camada.
+
+<details>
+<summary><b> 1. Gestão de Identidade (IAM)</b></summary>
+
+* Implementação de ACLs para controle granular de arquivos.
+* Auditoria de sessões de usuários para rastreabilidade total.
+* **Evidência principal:** ![IAM Cockpit](docs/assets/iam-cockpit.png)
+</details>
+
+<details>
+<summary><b> 2. Integridade e Proteção de Dados (FIM)</b></summary>
+
+* Configuração de **Tripwire** para detecção de intrusão e alteração de arquivos críticos.
+* Criptografia de disco via **LUKS** para segurança em repouso.
+* **Status final:** ![Hardening Index 68](docs/assets/lynis-hardening-index-68.png)
+</details>
+
+<details>
+<summary><b> 3. Defesa de Perímetro e Rede</b></summary>
+
+* SSH blindado na porta 2222 e bloqueio de força bruta com **Fail2Ban**.
+* Regras ricas de Firewall com logging ativo para auditoria de ataques.
+* **Configuração ativa:** ![Auditoria Final](docs/assets/auditoria-final-hardening.png)
+</details>
 
 ---
 
-## Implementações de Hardening & Evidências
+## Diferenciais Técnicos (SRE & Troubleshooting)
 
-### **1. Gestão de Identidade e Permissões (IAM)**
-Controle rigoroso de quem acessa o quê, utilizando ferramentas nativas e avançadas.
-* **[Controle de Acesso por ACLs](docs/assets/01-acl-configuration-getfacl.png):** Permissões granulares além do padrão Linux.
-* **[Auditoria via Cockpit](docs/assets/iam-cockpit.png):** Monitoramento visual de usuários e logs de autenticação.
-* **[Check de Usuários](docs/assets/user-audit-cli.png):** Validação de integridade de contas via terminal.
+Para este projeto, não utilizei apenas instaladores automáticos; trabalhei na base do sistema para garantir flexibilidade:
 
-### **2. Integridade e Segurança de Dados (FIM)**
-Garantindo a imutabilidade do sistema e proteção contra alterações indevidas.
-* **[Integridade com Tripwire](docs/assets/tripwire-integrity-check-complete.png):** Monitoramento ativo de hashes de arquivos críticos.
-* **[Blindagem com LUKS](docs/assets/luks-setup-complete.png):** Criptografia de disco para proteção de dados em repouso.
-* **[Auditoria Lynis](docs/assets/lynis-hardening-index-68.png):** Pontuação de **68 no Hardening Index**, validando a robustez da máquina.
+### **Compilação Manual (Nmap 7.98)**
+Domínio sobre o ciclo de vida de softwares, compilando ferramentas direto do código-fonte para maior segurança e controle de dependências.
+![Nmap Build](docs/assets/nmap-error.png)
 
-### **3. Defesa Ativa e Auditoria de Rede**
-Blindagem das portas de entrada e monitoramento de ameaças em tempo real.
-* **[Consolidação Técnica](docs/assets/auditoria-final-hardening.png):** SSH na porta 2222, rich rules de firewall e SELinux ativo.
-* **[Jails do Fail2Ban](docs/assets/fail2ban-ssh-jail-active-status.png):** Proteção automática contra ataques de força bruta no SSH.
-* **[Antivírus Systemd](docs/assets/clamav-automation-service.png):** Automação do ClamAV para defesa proativa.
+### **Automação via Systemd**
+Criação de serviços customizados para monitoramento de recursos (RAM e Logs), garantindo visibilidade total do ambiente.
+![Systemd Monitoring](docs/assets/ssh-hardening-selinux-resolution.png)
 
 ---
 
-## Diferenciais de Troubleshooting (Mão na Massa)
-
-Demonstração de competências técnicas que vão além do básico:
-
-1.  **Compilação Manual:** Instalação do **Nmap 7.98** a partir do código-fonte, garantindo ferramentas atualizadas sem depender apenas de repositórios oficiais.
-    * ![Compilação Nmap](docs/assets/nmap-error.png)
-2.  **Serviços Customizados:** Criação de um serviço Systemd para monitoramento de RAM em tempo real, integrando logs estruturados.
-    * ![Monitoramento RAM](docs/assets/ssh-hardening-selinux-resolution.png)
-3.  **SELinux Resiliente:** Diferente da abordagem comum de desativar o SELinux, mantive-o ativo (Permissive) para aprender a diagnosticar e rotular contextos de arquivos corretamente.
-
----
-
-## Insights & Metodologia
-* **Segurança em Camadas:** A defesa não depende de uma ferramenta, mas da combinação de Firewall + SELinux + Tripwire.
-* **Documentação como Código:** Cada passo foi documentado via terminal (Vim), garantindo rastreabilidade.
-* **Foco em Estabilidade:** O hardening foi aplicado visando a segurança sem comprometer o tempo de atividade (*uptime*) do servidor.
+## Metodologia Prática
+* **SELinux Proativo:** Mantive o SELinux em modo *Permissive* para mapear contextos e criar políticas reais, em vez de simplesmente desativar a segurança.
+* **Vim as IDE:** Todo o setup foi documentado e editado via terminal, demonstrando agilidade em ambientes sem interface gráfica.
 
 ---
 
 ## ⏭️ Próximos Passos
-Concluída a segurança. Futura atualização somente para incluir SQLITE.
+Concluída a segurança. Futura atualização somente para incluir SQLite.
+
+---
+<p align="center">
+  <b>[<a href="docs/assets/">Clique aqui para ver a Galeria Completa de Evidências Técnicas</a>]</b>
+</p>
