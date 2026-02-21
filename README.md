@@ -1,88 +1,57 @@
-
 # Repo 2: Identity, Access & Cybersecurity 🛡️
 
-Este repositório documenta minha jornada de aprendizado em **Segurança Operacional e Hardening**. Aqui, o foco deixa de ser apenas "fazer funcionar" e passa a ser "fazer de forma segura", aplicando o princípio do privilégio mínimo e a redução da superfície de ataque.
-
-> **🎯 Perfil:** Entusiasta de Linux e Cibersegurança em busca de **Estágio/Oportunidade Júnior**. Este projeto demonstra minha disciplina com documentação técnica e atenção aos detalhes de infraestrutura corporativa.
+Este repositório documenta a implementação de uma **Arquitetura de Defesa em Profundidade** utilizando o Rocky Linux 9. O objetivo foi transformar um servidor padrão em uma infraestrutura blindada, auditável e resiliente, focando em segurança operacional para o mercado brasileiro.
 
 ---
 
-## 🛠️ Laboratórios de Especialização
-
-### **1. Identity & Access Management (IAM)**
-Implementação de políticas de governança de usuários e grupos para garantir conformidade e rastreabilidade. Para equilibrar a gestão, utilizo tanto o monitoramento visual quanto a auditoria bruta via terminal.
-
-![IAM Management](docs/assets/iam-cockpit.png)
-*Legenda: Gestão centralizada de contas e monitoramento de logs via Cockpit.*
-
-**Habilidades demonstradas:**
-* **Auditoria CLI:** Validação de permissões, integridade de arquivos sensíveis e gestão de privilégios elevados. ![User Audit](docs/assets/user-audit-cli.png)
-* **Compliance:** Configuração de políticas de senhas e expiração de contas (Password Aging).
-* **Evidência Extra:** [Ajuste de Runlevels e Targets do Sistema](docs/assets/hardening-target-configuration.png).
+## Estrutura do Projeto
+A organização deste repositório segue padrões de documentação profissional:
+* `scripts/`: Automações de segurança e monitoramento.
+* `docs/assets/`: Evidências técnicas de auditorias e logs.
+* `config/`: Arquivos de configuração de serviços (Fail2Ban, Tripwire, etc).
 
 ---
 
-### **2. SSH Hardening & SELinux (Segurança de Infraestrutura)**
-Configuração crítica do serviço SSH para mitigar vetores de ataque comuns e gestão de políticas de segurança no nível do Kernel.
+## Implementações de Hardening & Evidências
 
-![SSH & SELinux Hardening](docs/assets/ssh-hardening-selinux-resolution.png)
-*Legenda: Ajustando contextos do SELinux para permitir serviços customizados sem abrir mão da segurança.*
+### **1. Gestão de Identidade e Permissões (IAM)**
+Controle rigoroso de quem acessa o quê, utilizando ferramentas nativas e avançadas.
+* **[Controle de Acesso por ACLs](docs/assets/01-acl-configuration-getfacl.png):** Permissões granulares além do padrão Linux.
+* **[Auditoria via Cockpit](docs/assets/iam-cockpit.png):** Monitoramento visual de usuários e logs de autenticação.
+* **[Check de Usuários](docs/assets/user-audit-cli.png):** Validação de integridade de contas via terminal.
 
-> **🔐 Nota de Hardening (SELinux States):**
-> Durante este lab, apliquei a diferença entre **Enforcing** (bloqueio ativo), **Permissive** (diagnóstico) e **Disabled** (inseguro). O objetivo foi manter o sistema sempre em modo Enforcing, corrigindo as políticas conforme necessário.
+### **2. Integridade e Segurança de Dados (FIM)**
+Garantindo a imutabilidade do sistema e proteção contra alterações indevidas.
+* **[Integridade com Tripwire](docs/assets/tripwire-integrity-check-complete.png):** Monitoramento ativo de hashes de arquivos críticos.
+* **[Blindagem com LUKS](docs/assets/luks-setup-complete.png):** Criptografia de disco para proteção de dados em repouso.
+* **[Auditoria Lynis](docs/assets/lynis-hardening-index-68.png):** Pontuação de **68 no Hardening Index**, validando a robustez da máquina.
 
-**Habilidades demonstradas:**
-* **Blindagem de Acesso:** [Configuração final do SSHD](docs/assets/sshd-config-hardening-final.png) (Desativação de login root, porta não-padrão e criptografia forte).
-* **Service Control:** [Uso de Masking em serviços inseguros e configuração de IPtables](docs/assets/hardening-service-masking-iptables.png).
-
----
-
-## 🛡️ Hardening & Compliance Frameworks
-
-As implementações deste laboratório foram norteadas por frameworks de segurança reconhecidos pelo mercado (**NIST** e **CIS Controls**), visando o alinhamento com normas de governança (**ISO 27001**).
-
-### Security Configuration (SELinux)
-Para garantir o isolamento de processos e proteção do Kernel, o sistema é operado em conformidade com as políticas de controle de acesso obrigatório:
-
-* **Enforcing:** Estado ativo. O SELinux impõe a política e bloqueia acessos com base em regras de contexto (Padrão deste laboratório).
-* **Permissive:** O sistema apenas gera alertas de violação no log, sem bloquear a ação. Essencial para troubleshooting de aplicações.
-* **Disabled:** Nenhuma política de segurança é carregada. Estado evitado para manter a integridade do ambiente.
-
-### Vulnerability Management & Blue Team
-A auditoria realizada via **Nmap** e **User Audit CLI** (documentada nas evidências) foca na Redução da Superfície de Ataque (*Attack Surface Reduction*), garantindo que apenas serviços autorizados e portas estritamente necessárias estejam acessíveis.
+### **3. Defesa Ativa e Auditoria de Rede**
+Blindagem das portas de entrada e monitoramento de ameaças em tempo real.
+* **[Consolidação Técnica](docs/assets/auditoria-final-hardening.png):** SSH na porta 2222, rich rules de firewall e SELinux ativo.
+* **[Jails do Fail2Ban](docs/assets/fail2ban-ssh-jail-active-status.png):** Proteção automática contra ataques de força bruta no SSH.
+* **[Antivírus Systemd](docs/assets/clamav-automation-service.png):** Automação do ClamAV para defesa proativa.
 
 ---
 
-### **3. Auditoria de Rede e Inteligência**
-Mapeamento de serviços e portas para detecção de vulnerabilidades. Este laboratório destaca minha proatividade em trabalhar com ferramentas atualizadas.
+## Diferenciais de Troubleshooting (Mão na Massa)
 
-![Security Audit](docs/assets/nmap-audit.png)
-*Legenda: Auditoria com Nmap v7.98 (Compilado manualmente com suporte a OpenSSL e LibSSH2).*
+Demonstração de competências técnicas que vão além do básico:
 
-**Diferencial Técnico:**
-- **Source Compilation:** Domínio de compilação de software para garantir suporte a protocolos modernos de segurança (SSL/TLS).
-- **Network Discovery:** Análise de superfícies de exposição em ambientes Rocky Linux.
-
----
-
-## 🏆 Desafios Técnicos Superados
-
-Ao longo deste repositório, enfrentei e resolvi obstáculos que demonstram minha resiliência técnica:
-
-1. **Persistência do SELinux:** Ao alterar a porta do SSH, o serviço foi bloqueado pelo Kernel. Em vez de desabilitar a segurança, utilizei o `semanage` para criar uma política que permitisse a nova porta, mantendo o sistema blindado.
-2. **Automação de Serviços:** Superei erros de execução no Systemd ao configurar serviços de monitoramento, aprendendo a trabalhar com caminhos absolutos e gestão de permissões em `/var/log`.
-3. **Gestão de Dependências:** A compilação manual do Nmap exigiu a resolução de dependências críticas de desenvolvimento, garantindo uma ferramenta de auditoria superior à versão padrão dos repositórios.
+1.  **Compilação Manual:** Instalação do **Nmap 7.98** a partir do código-fonte, garantindo ferramentas atualizadas sem depender apenas de repositórios oficiais.
+    * ![Compilação Nmap](docs/assets/nmap-error.png)
+2.  **Serviços Customizados:** Criação de um serviço Systemd para monitoramento de RAM em tempo real, integrando logs estruturados.
+    * ![Monitoramento RAM](docs/assets/ssh-hardening-selinux-resolution.png)
+3.  **SELinux Resiliente:** Diferente da abordagem comum de desativar o SELinux, mantive-o ativo (Permissive) para aprender a diagnosticar e rotular contextos de arquivos corretamente.
 
 ---
 
-## ✍️ Metodologia e Workflow
-Documentar é tão importante quanto executar. Utilizo o terminal como minha principal IDE de trabalho.
-
-* **[Vim como IDE de Documentação](docs/assets/documentation-workflow-vim.png)**: Edição ágil e direta no servidor.
-* **[Organização de Repositório](docs/assets/projeto-estrutura-git.png)**: Estrutura profissional para escalabilidade.
-* **[Ciclo de Vida Git](docs/assets/evidencia-deploy-local.png)**: Versionamento rigoroso para garantir a integridade do código.
+## Insights & Metodologia
+* **Segurança em Camadas:** A defesa não depende de uma ferramenta, mas da combinação de Firewall + SELinux + Tripwire.
+* **Documentação como Código:** Cada passo foi documentado via terminal (Vim), garantindo rastreabilidade.
+* **Foco em Estabilidade:** O hardening foi aplicado visando a segurança sem comprometer o tempo de atividade (*uptime*) do servidor.
 
 ---
 
-## 🚀 Contato
-Estou pronto para aprender e contribuir em times de infraestrutura e segurança. Sinta-se à vontade para revisar meus laboratórios!
+## ⏭️ Próximos Passos
+Concluída a segurança. Futura atualização somente para incluir SQLITE.
