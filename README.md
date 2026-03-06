@@ -18,44 +18,51 @@ Transformar um servidor padrão em uma infraestrutura resiliente e auditável, a
 ## 🛠️ Troubleshooting & Engenharia de Segurança
 
 ### 1. Gestão de Identidade e Acesso (IAM)
-Implementação de controle granular via Cockpit e ACLs para rastreabilidade total de sessões.
+Implementação de controle granular via Cockpit, auditoria de sessões e configuração de permissões avançadas (ACLs).
 ![IAM Cockpit](docs/assets/iam-cockpit.png)
+![ACL Configuration](docs/assets/01-acl-configuration-getfacl.png)
+![User Session Audit](docs/assets/user-session-audit-ac.png)
 
-### 2. Integridade e Detecção de Intrusão (FIM)
-Configuração do **Tripwire** para monitoramento de arquivos críticos e auditoria via **Lynis**.
-* **Resultado:** Hardening Index 68 (Acima da média de mercado para setups iniciais).
+### 2. Integridade e Detecção de Intrusão (FIM & Antivírus)
+Uso do **Tripwire** para monitoramento de arquivos críticos e deploy do **ClamAV** para proteção contra malwares.
+* **Resultado:** Auditoria completa via Lynis com Hardening Index 68.
 ![Lynis Index](docs/assets/lynis-hardening-index-68.png)
+![Tripwire Integrity](docs/assets/tripwire-integrity-check-complete.png)
+![ClamAV Deployment](docs/assets/clamav-antivirus-deployment.png)
 
 ### 3. Defesa de Perímetro (Firewall & SSH)
-Blindagem de SSH na porta 2222, bloqueio de força bruta com Fail2Ban e regras ricas de firewall.
+Blindagem de SSH na porta 2222 e bloqueio de força bruta com **Fail2Ban**.
 ![Auditoria Final](docs/assets/auditoria-final-hardening.png)
+![Fail2Ban Status](docs/assets/fail2ban-ssh-jail-active-status.png)
 
 ### 4. Resolução de Conflitos de Kernel (NVIDIA/CUDA)
 * **Incidente:** Mismatch entre bibliotecas NVML e módulos de Kernel.
-* **Solução:** Saneamento de repositórios e deploy do Driver 580 (Open Kernel) para suporte a CUDA 13.
+* **Solução:** Saneamento de repositórios e deploy do Driver 580 (Open Kernel).
 ![Troubleshooting Kernel](docs/assets/troubleshooting-nvidia-mismatch-and-repo-cleanup.png)
 ![Setup Final](docs/assets/final-setup-rtx4050-driver-580-cuda-13.png)
 
 ---
 
-## ⚙️ Automação de Auditoria e Saúde (Toolkit)
-Desenvolvimento de um conjunto de ferramentas em Shell Script para garantir a conformidade e a disponibilidade do sistema:
+## Automação de Auditoria e Saúde (Toolkit)
+Desenvolvimento de scripts para garantir a conformidade contínua do ambiente:
 
-* **`security_audit.sh`**: Validação de conformidade (SELinux, SSH, Firewalld e Tripwire).
-* **`check_system_health.sh`**: Diagnóstico proativo de recursos críticos (CPU/RAM/Disco).
-* **`monitor_sistema.sh`**: Monitoramento contínuo de logs e processos ativos para detecção de anomalias.
+* **`security_audit.sh`**: Validação de SELinux, SSH e Firewalld.
+* **`check_system_health.sh`**: Diagnóstico proativo de recursos.
+* **`monitor_sistema.sh`**: Monitoramento de logs e processos.
 
-**Execução da Auditoria de Segurança:**
-![Security Audit Execution](docs/assets/security-audit-execution.png)
+**Evidência de Monitoramento:**
+![System Monitor Execution](docs/assets/monitor_sistema_sh.png)
 
 ---
 
 ## 🛡️ Diferenciais de Operação (SRE Mindset)
 
-* **Compilação Manual (Nmap 7.98):** Domínio do ciclo de vida de software, compilando binários direto da fonte para maior controle e segurança.
+* **Compilação Manual (Nmap 7.98):** Domínio do ciclo de vida de software, compilando binários direto da fonte para auditoria.
 ![Nmap Success](docs/assets/nmap-compilation-success.png)
-* **SELinux Proativo:** Operação em modo *Permissive* para mapeamento de contextos e criação de políticas personalizadas, evitando o erro comum de desativar a proteção.
-* **Vim as IDE:** Todo o setup e documentação realizados via CLI, demonstrando agilidade em ambientes headless.
+* **Hardening de Serviços:** Implementação de Masking em serviços desnecessários e tunelamento seguro.
+![Hardening Service](docs/assets/hardening-service-masking-iptables.png)
+* **SELinux Proativo:** Gestão de contextos sem desativar a proteção do Kernel.
+![SELinux Resolution](docs/assets/ssh-hardening-selinux-resolution.png)
 
 ---
 
