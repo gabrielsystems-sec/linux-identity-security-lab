@@ -26,7 +26,7 @@ Implementação de controle granular via Cockpit, auditoria de sessões e config
 ### 2. Integridade e Detecção de Intrusão (FIM & Antivírus)
 Uso do **Tripwire** para monitoramento de arquivos críticos e deploy do **ClamAV** para proteção contra malwares.
 * **Resultado:** Auditoria completa via Lynis com Hardening Index 68.
-![Lynis Index](docs/assets/lynis-hardening-index-68.png)
+![Lynis Index](docs/assets/index69_auditoria_hardening_lynis.png)
 ![Tripwire Integrity](docs/assets/tripwire-integrity-check-complete.png)
 ![ClamAV Deployment](docs/assets/clamav-antivirus-deployment.png)
 
