@@ -35,6 +35,17 @@ Blindagem de SSH na porta 2222 e bloqueio de força bruta com **Fail2Ban**.
 ![Auditoria Final](docs/assets/auditoria-final-hardening.png)
 ![Fail2Ban Status](docs/assets/fail2ban-ssh-jail-active-status.png)
 
+### 3.1. Defesa de Perímetro e Análise de Ofensiva (SOC Mindset)
+Blindagem de SSH na porta 2222 e monitoramento ativo de tentativas de intrusão.
+
+* **Hardening de Firewall:** Configuração de `firewalld` com Rich Rules para auditoria de tráfego e segmentação de portas.
+* **Detecção de Brute Force:** Identificação em tempo real de tentativas de acesso via usuários inválidos e IPs externos.
+
+![Hardening Firewall](docs/assets/hardening-firewall-config.png)
+![Detecção de Intrusão](docs/assets/poc-bruteforce-detection-journalctl.png)
+
+> **Nota Técnica:** O log acima demonstra a captura de um evento de força bruta (MITRE T1110) originado de uma rede externa, onde o sistema identificou o IP atacante e o usuário alvo, permitindo a correlação de dados para resposta a incidentes.
+
 ### 4. Resolução de Conflitos de Kernel (NVIDIA/CUDA)
 * **Incidente:** Mismatch entre bibliotecas NVML e módulos de Kernel.
 * **Solução:** Saneamento de repositórios e deploy do Driver 580 (Open Kernel).
