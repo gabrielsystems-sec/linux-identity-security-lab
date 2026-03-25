@@ -31,6 +31,8 @@ Necessidade de centralizar a gestão de acessos administrativos, auditar sessõe
   * **IAM Cockpit:** ![IAM Cockpit](docs/assets/iam-cockpit.png)
   * **Configuração de ACL:** ![ACL Configuration](docs/assets/01-acl-configuration-getfacl.png)
   * **Auditoria de Sessão:** ![User Session Audit](docs/assets/user-session-audit-ac.png)
+  * **RBAC Final (MongoDB/System):** ![RBAC Implementation](docs/assets/evidencia-rbac-final.png)
+  * **Password Policy (PAM/Shadow):** ![Password Policy](docs/assets/politica_senhas_e_seguranca_acesso.png)
 </details>
 
 ---
@@ -62,6 +64,7 @@ O serviço de SSH na porta padrão (22) sofria constantes tentativas automatizad
 ### Troubleshooting e Resolução
 1. **Blindagem:** Migração do SSH para a porta não convencional `2222` e amarração do daemon `fail2ban` para banimento automático de IPs ofensores.
 2. **SOC Mindset:** Monitoramento de logs via `journalctl` correlacionando eventos com a matriz MITRE ATT&CK (T1110 - Brute Force). Bloqueio de tráfego de borda via Rich Rules do Firewalld.
+3. **Políticas de Transição:** Configuração de diretrizes para o SELinux e análise de logs de auditoria (avc: denied) para garantir que a transição para o modo Enforcing ocorra sem interrupção de serviços críticos.
 
 ### Evidência Técnica
 <details>
@@ -71,6 +74,9 @@ O serviço de SSH na porta padrão (22) sofria constantes tentativas automatizad
   * **Jail do Fail2Ban Ativa:** ![Fail2Ban Status](docs/assets/fail2ban-ssh-jail-active-status.png)
   * **Firewalld Rich Rules:** ![Hardening Firewall](docs/assets/hardening-firewall-config.png)
   * **Captura de Brute Force (SOC):** ![Detecção de Intrusão](docs/assets/poc-bruteforce-detection-journalctl.png)
+  * **Network Whitelisting:** ![Firewall Whitelist](docs/assets/firewall_whitelist_native_network.png)
+  * **Native Firewall Rules:** ![Firewall Config](docs/assets/02_firewall_config.png)
+  * **SELinux Enforcement Policy:** ![SELinux Config](docs/assets/03_selinux_configuration.png)
 </details>
 
 ---
@@ -117,7 +123,7 @@ Desenvolvimento de scripts Bash para garantir a conformidade contínua do ambien
 Domínio total do ciclo de vida de software, compilando binários direto do código-fonte para evitar dependências comprometidas de repositórios externos.
 
 ### SELinux Sem Desvios
-Tratamento de contextos de segurança de portas e arquivos sem apelar para o desligamento da proteção do Kernel (`setenforce 0`).
+Gestão proativa de contextos de segurança, tratando alertas de violação via audit2allow e semanage, garantindo que o sistema esteja preparado para o modo Enforcing sem a necessidade de desativar as proteções do Kernel.
 
 ### Evidência Técnica
 <details>
