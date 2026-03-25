@@ -1,4 +1,4 @@
-# Repo 2: Linux Lab - Identity, Access & Cybersecurity 🛡️
+# Identity, Access & Cybersecurity 🛡️
 
 > Hardening de sistemas RHEL-based, gestão de identidades (IAM) e defesa em profundidade.
 
