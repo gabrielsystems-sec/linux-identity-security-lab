@@ -1,156 +1,235 @@
-# Identity, Access & Cybersecurity 🛡️
+# Identity & Cybersecurity 🛡️
 
-Repositório dedicado ao **Hardening de sistemas RHEL-based**, gestão de identidades (IAM) e implementação de **Defesa em Profundidade**. Este laboratório documenta a transição de um servidor padrão para uma infraestrutura resiliente, auditável e protegida contra vetores de ataque modernos no Rocky Linux.
+> Hardening de sistemas RHEL-based, gestão de identidades e defesa em profundidade.
 
-## 🎯 Business Value & Segurança
-O objetivo central é garantir a **Integridade, Confidencialidade e Disponibilidade** dos ativos. Através de criptografia de repouso (LUKS), controle de acesso granular (ACLs) e monitoramento de integridade de arquivos (FIM), estabelecemos um ambiente em conformidade com as melhores práticas de governança e segurança defensiva.
-
----
-
-## Stack Tecnológica & Matriz de Arquitetura
-* **Segurança de Kernel:** SELinux (Enforcing/Targeted), PAM (Pluggable Authentication Modules).
-* **Proteção de Dados:** LUKS (Linux Unified Key Setup) - AES-256.
-* **Defesa de Perímetro:** Firewalld (Rich Rules), Fail2Ban (Jails customizadas).
-* **Auditoria & FIM:** Tripwire (File Integrity Monitoring), Lynis, ClamAV.
-* **Aceleração & Kernel:** NVIDIA Driver Open Kernel (v580) & CUDA Toolkit 13.
-
-### Matriz de Defesa em Profundidade
-| Camada | Tecnologia Principal | Estratégia de Defesa | Função no Ecossistema |
-| :--- | :--- | :--- | :--- |
-| **Data-at-Rest** | LUKS Cripto | AES-256 Encryption | Proteção física contra furto/extração de discos |
-| **Identidade** | PAM / ACLs / Cockpit | MFA & Least Privilege | Controle rigoroso de acesso administrativo |
-| **Integridade** | Tripwire | FIM (Baseline Hashing) | Detecção de alterações em binários do sistema |
-| **Intrusão** | Fail2Ban | Brute Force Mitigation | Banimento automático de IPs ofensores |
-| **Auditoria** | Lynis | Hardening Index Scoring | Verificação contínua de conformidade e riscos |
+| Categoria | Tecnologias | Foco |
+| :--- | :--- | :--- |
+| **Identidade** | PAM / ACLs / Cockpit | Controle de acesso |
+| **Integridade** | Tripwire / Lynis / ClamAV | FIM e auditoria |
+| **Defesa** | Firewalld / Fail2Ban | Mitigação de ataques |
+| **Proteção de Dados** | LUKS | Criptografia em repouso |
+| **Sistema** | SELinux | Controle de segurança |
 
 ---
 
-## 📁 1. Gestão de Identidade e Acesso (IAM & ACLs)
+## Objetivo
+
+Este laboratório documenta práticas de hardening e segurança em Rocky Linux, abordando controle de acesso, proteção de dados, monitoramento de integridade e defesa contra ataques.
+
+O ambiente foi desenvolvido a partir de problemas práticos, investigações e processos de troubleshooting.
+
+---
+
+## 1. Gestão de Identidade e Acesso
 
 ### Contexto do Problema
-Centralizar a gestão administrativa e aplicar o Princípio do Menor Privilégio (PoLP) para mitigar riscos de escalada de privilégios.
 
-### Resolução SRE
-* **PAM Hardening:** Configuração do `system-auth` para forçar complexidade e travar contas após tentativas inválidas.
-* **ACLs Avançadas:** Implementação de permissões granulares via `setfacl`, permitindo acesso pontual a usuários de serviço sem alterar as permissões globais do sistema.
+Centralizar a gestão administrativa e aplicar o Princípio do Menor Privilégio para reduzir riscos de escalada de privilégios.
 
-### Evidência Técnica
+### Implementação
+
+- Configuração do PAM para aplicar políticas de senha e bloqueio após tentativas inválidas.
+- Implementação de permissões granulares com ACLs via `setfacl`.
+- Auditoria de sessões e acesso administrativo.
+
 <details>
-  <summary>📂 Clique para ver IAM, ACLs e Auditoria</summary>
+  <summary>Ver IAM, ACLs e auditoria</summary>
 
-  * **IAM Cockpit Dashboard:** ![IAM Cockpit](./docs/assets/iam-cockpit.png)
-  * **Configuração de ACLs:** ![ACL Config](./docs/assets/01-acl-configuration-getfacl.png)
-  * **Validação de Acesso ACL:** ![ACL Validation](./docs/assets/02-acl-validation-user-access.png)
-  * **Política de Senhas (PAM):** ![PAM Config](./docs/assets/rocky-linux-pam-system-auth.png)
-  * **Auditoria de Sessão:** ![Session Audit](./docs/assets/user-session-audit-ac.png)
+**IAM Cockpit Dashboard**
+
+![IAM Cockpit](./docs/assets/iam-cockpit.png)
+
+**Configuração de ACLs**
+
+![ACL Config](./docs/assets/01-acl-configuration-getfacl.png)
+
+**Validação de acesso**
+
+![ACL Validation](./docs/assets/02-acl-validation-user-access.png)
+
+**Política de senhas**
+
+![PAM Config](./docs/assets/rocky-linux-pam-system-auth.png)
+
+**Auditoria de sessão**
+
+![Session Audit](./docs/assets/user-session-audit-ac.png)
+
 </details>
 
 ---
 
-## 📁 2. Integridade e Detecção (FIM & Compliance)
+## 2. Integridade e Auditoria
 
 ### Contexto do Problema
-Garantir que binários críticos (como `passwd` ou `sshd`) não sejam substituídos por versões maliciosas (Backdoors).
 
-### Resolução
-* **Tripwire Deployment:** Criação da base de dados (Baseline) assinada com chaves criptográficas.
-* **Auditoria Lynis:** Submissão do host ao benchmark de segurança, atingindo o **Hardening Index 69** após a remediação de flags críticas.
+Garantir que binários críticos, como `passwd` e `sshd`, não sejam substituídos ou modificados sem detecção.
 
-### Evidência Técnica
+### Implementação
+
+- Criação de baseline de integridade com Tripwire.
+- Auditoria do host com Lynis.
+- Validação da proteção com ClamAV.
+
+O laboratório atingiu um **Hardening Index 69** após a remediação de flags críticas identificadas.
+
 <details>
-  <summary>📂 Clique para ver Integridade e Auditoria</summary>
+  <summary>Ver integridade e auditoria</summary>
 
-  * **Baseline do Tripwire:** ![Tripwire Init](./docs/assets/tripwire-init-command.png)
-  * **Check de Integridade Final:** ![Tripwire Report](./docs/assets/tripwire-integrity-check-complete.png)
-  * **Hardening Index 69:** ![Lynis Index](./docs/assets/index69_auditoria_hardening_lynis.png)
-  * **Antivírus ClamAV:** ![ClamAV Status](./docs/assets/clamav-antivirus-deployment.png)
+**Baseline do Tripwire**
+
+![Tripwire Init](./docs/assets/tripwire-init-command.png)
+
+**Check de integridade**
+
+![Tripwire Report](./docs/assets/tripwire-integrity-check-complete.png)
+
+**Hardening Index**
+
+![Lynis Index](./docs/assets/index69_auditoria_hardening_lynis.png)
+
+**ClamAV**
+
+![ClamAV Status](./docs/assets/clamav-antivirus-deployment.png)
+
 </details>
 
 ---
 
-## 📁 3. [GOLDEN EVIDENCE] SOC Mindset: Brute Force & Defesa Ativa
+## 3. Brute Force e Defesa Ativa
 
-### O Incidente (PoC de Ofensiva)
-Identificação de ataques de dicionário automatizados no serviço SSH visando a quebra de credenciais administrativas.
+### O Incidente
 
-### Troubleshooting & Mitigação
-1. **Identificação:** Captura de padrões de ataque via `journalctl` (T1110 - MITRE ATT&CK).
-2. **Jail Action:** O **Fail2Ban** detectou o padrão anômalo, inserindo o IP na `REJECT` chain do Firewalld.
-3. **Hardening Final:** Migração do SSH para a porta **2222** e aplicação de Rich Rules para Whitelisting.
+Identificação de ataques de dicionário automatizados contra o serviço SSH.
 
-### Evidência Técnica
+### Investigação e Mitigação
+
+1. Identificação de padrões de ataque por meio do `journalctl`.
+2. Detecção e bloqueio automático pelo Fail2Ban.
+3. Aplicação de regras no Firewalld.
+4. Hardening adicional do SSH com alteração da porta e whitelisting.
+
 <details>
-  <summary>📂 Clique para ver a Defesa Ativa</summary>
+  <summary>Ver investigação e defesa</summary>
 
-  * **Captura de Brute Force:** ![SOC Detection](./docs/assets/poc-bruteforce-detection-journalctl.png)
-  * **Fail2Ban Jail Active:** ![Fail2Ban Status](./docs/assets/fail2ban-ssh-jail-active-status.png)
-  * **Firewall Whitelist:** ![Firewall Rules](./docs/assets/firewall_whitelist_native_network.png)
-  * **Hardening SSH Config:** ![SSH Final](./docs/assets/sshd-config-hardening-final.png)
+**Detecção de brute force**
+
+![SOC Detection](./docs/assets/poc-bruteforce-detection-journalctl.png)
+
+**Fail2Ban ativo**
+
+![Fail2Ban Status](./docs/assets/fail2ban-ssh-jail-active-status.png)
+
+**Regras de firewall**
+
+![Firewall Rules](./docs/assets/firewall_whitelist_native_network.png)
+
+**Hardening do SSH**
+
+![SSH Final](./docs/assets/sshd-config-hardening-final.png)
+
 </details>
 
 ---
 
-## 📁 4. Criptografia Data-at-Rest (LUKS)
+## 4. Criptografia de Dados em Repouso
 
 ### Contexto do Problema
-Necessidade de proteger dados sensíveis contra montagem não autorizada e extração física de discos do servidor.
 
-### Resolução
-Implementação de criptografia de bloco via **LUKS (dm-crypt)**. O volume é descriptografado apenas em tempo de execução via passphrase segura, garantindo proteção total "at-rest".
+Proteger dados sensíveis contra montagem não autorizada e extração física dos discos.
 
-### Evidência Técnica
+### Implementação
+
+Configuração de criptografia de bloco com **LUKS (dm-crypt)** para proteção dos dados em repouso.
+
 <details>
-  <summary>📂 Clique para ver o Setup de Criptografia</summary>
+  <summary>Ver configuração do LUKS</summary>
 
-  * **Cryptsetup Format Success:** ![LUKS Format](./docs/assets/cryptsetup-format-success.png)
-  * **LUKS Setup Complete:** ![LUKS Final](./docs/assets/luks-setup-complete.png)
-  * **Troubleshooting umount:** ![LUKS Fix](./docs/assets/luks-troubleshooting-umount.png)
+**Cryptsetup**
+
+![LUKS Format](./docs/assets/cryptsetup-format-success.png)
+
+**Configuração concluída**
+
+![LUKS Final](./docs/assets/luks-setup-complete.png)
+
+**Troubleshooting de desmontagem**
+
+![LUKS Fix](./docs/assets/luks-troubleshooting-umount.png)
+
 </details>
 
 ---
 
-## 📁 5. Resolução de Conflitos de Kernel (NVIDIA/CUDA)
+## 5. Resolução de Conflito NVIDIA/CUDA
 
 ### Contexto do Problema
-Falha crítica de "NVML Mismatch" impedindo o uso de aceleração via hardware após atualização de bibliotecas.
 
-### Troubleshooting (Causa Raiz)
-* **Causa Raiz:** Múltiplos repositórios DNF habilitados instalando versões dessincronizadas do driver proprietário.
-* **Resolução:** Purge completo de drivers legados, saneamento de repositórios e instalação limpa do Driver Open Kernel (v580) e CUDA 13.
+Falha de `NVML Mismatch` após atualização de bibliotecas, impedindo o uso da aceleração por hardware.
 
-### Evidência Técnica
+### Causa e Resolução
+
+A causa identificada foi a existência de múltiplos repositórios DNF instalando versões dessincronizadas do driver.
+
+A resolução envolveu:
+
+- Remoção dos drivers legados.
+- Saneamento dos repositórios.
+- Instalação limpa do NVIDIA Open Kernel Driver v580.
+- Configuração do CUDA Toolkit 13.
+
 <details>
-  <summary>📂 Clique para ver a Resolução de Kernel</summary>
+  <summary>Ver resolução do conflito</summary>
 
-  * **Repo Cleanup & Fix:** ![Kernel Resolution](./docs/assets/troubleshooting-nvidia-mismatch-and-repo-cleanup.png)
-  * **Setup Final CUDA:** ![CUDA Success](./docs/assets/final-setup-rtx4050-driver-580-cuda-13.png)
+**Limpeza e correção**
+
+![Kernel Resolution](./docs/assets/troubleshooting-nvidia-mismatch-and-repo-cleanup.png)
+
+**Configuração final**
+
+![CUDA Success](./docs/assets/final-setup-rtx4050-driver-580-cuda-13.png)
+
 </details>
 
 ---
 
-## 📁 6. Diferenciais de Engenharia: Compilação & SELinux
+## 6. Compilação e SELinux
 
-### Diferenciais Técnicos
-* **Source Compilation:** Compilação do Nmap direto do código-fonte para garantir a integridade absoluta do binário.
-* **SELinux Mastery:** Gestão proativa de contextos, resolvendo violações via `semanage` e mantendo o sistema em conformidade com o modo Enforcing.
+### Compilação a partir do Código-Fonte
 
-### Evidência Técnica
+Compilação do Nmap diretamente do código-fonte para compreender o processo de instalação e validação do binário.
+
+### SELinux
+
+Gestão de contextos e resolução de violações utilizando `semanage`, mantendo o sistema em modo `Enforcing`.
+
 <details>
-  <summary>📂 Clique para ver Compilação e SELinux</summary>
+  <summary>Ver compilação e SELinux</summary>
 
-  * **Nmap Compilation:** ![Nmap Success](./docs/assets/nmap-compilation-success.png)
-  * **SELinux Context Fix:** ![SELinux Resolution](./docs/assets/ssh-hardening-selinux-resolution.png)
-  * **Full Activation Check:** ![SELinux Status](./docs/assets/selinux-full-activation-check.png)
+**Compilação do Nmap**
+
+![Nmap Success](./docs/assets/nmap-compilation-success.png)
+
+**Resolução de contexto**
+
+![SELinux Resolution](./docs/assets/ssh-hardening-selinux-resolution.png)
+
+**Verificação final**
+
+![SELinux Status](./docs/assets/selinux-full-activation-check.png)
+
 </details>
 
----
-
-> [!IMPORTANT]
-> **SRE Insight: SELinux Relabeling**
-> Durante a ativação do SELinux, o processo de `relabeling` no boot é vital. Interromper essa fase pode corromper os contextos de segurança de todo o sistema de arquivos.
+> **Nota sobre SELinux**
+>
+> Durante a ativação do SELinux, o processo de `relabeling` no boot é necessário para atualizar os contextos de segurança do sistema de arquivos.
+>
 > ![SELinux Relabel](./docs/assets/selinux-relabel-trigger.png)
 
-> [!TIP]
-> **Automação de Auditoria**
-> O script `monitor_sistema.sh` centraliza a saúde do hardening, auditando semanalmente as regras de firewall e logs de intrusão.
-> ![Security Audit](./docs/assets/monitor_sistema_sh.png)
+---
+
+## Automação de Auditoria
+
+O script `monitor_sistema.sh` centraliza verificações de segurança do ambiente, incluindo regras de firewall e logs relacionados a tentativas de intrusão.
+
+![Security Audit](./docs/assets/monitor_sistema_sh.png)
